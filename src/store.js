@@ -1,32 +1,41 @@
 export const initialStore=()=>{
   return{
     message: null,
-    todos: [
-      {
-        id: 1,
-        title: "Make the bed",
-        background: null,
-      },
-      {
-        id: 2,
-        title: "Do my homework",
-        background: null,
-      }
-    ]
+    contact: []
   }
 }
 
 export default function storeReducer(store, action = {}) {
-  switch(action.type){
-    case 'add_task':
+  if (action.type === "load_contact") {
+    return {
+      ...store,
+      store: action.store,
+    };
+  }
 
-      const { id,  color } = action.payload
+  if (action.type === "edit_contact") {
+    const contactIdx = store.contact.findIndex(
+      (contact) => contact.id === action.contact.id
+    );
+    const newContact = store.contact.toSpliced(contactIdx, 1, action.book);
 
-      return {
-        ...store,
-        todos: store.todos.map((todo) => (todo.id === id ? { ...todo, background: color } : todo))
-      };
-    default:
-      throw Error('Unknown action.');
-  }    
+    return {
+      ...store,
+      contact: newContact,
+    };
+  }
+
+  if (action.type === "delete_contact") {
+    const contactIdx = store.contact.findIndex(
+      (book) => contact.id === action.id
+    );
+    const newContact = store.contact.toSpliced(contactIdx, 1);
+
+    return {
+      ...store,
+      contact: newContact,
+    };
+  }
+
+  return store;
 }
